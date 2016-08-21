@@ -17,6 +17,7 @@
   </head>
   <body>
     <div id="map"></div>
+    <script src="libs/jquery-3.1.0.min.js"></script>
     <script>
       // Note: This example requires that you consent to location sharing when
       // prompted by your browser. If you see the error "The Geolocation service
@@ -29,7 +30,7 @@
           zoom: 15
         });
         var infoWindow = new google.maps.InfoWindow({map: map});
-
+        
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -41,6 +42,22 @@
             infoWindow.setPosition(pos);
             infoWindow.setContent('Location found.');
             map.setCenter(pos);
+
+            
+            var addresses = ['71 N Wilson Ave Pasadena, CA 91106'];
+
+            for (var x = 0; x < addresses.length; x++) {
+                $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false', null, function (data) {
+                    var p = data.results[0].geometry.location
+                    var latlng = new google.maps.LatLng(p.lat, p.lng);
+                    new google.maps.Marker({
+                        position: latlng,
+                        map: map
+                    });
+
+                });
+            }
+            
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
