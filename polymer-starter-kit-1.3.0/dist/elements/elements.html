@@ -16849,6 +16849,10 @@ module.exports = Array.isArray || function (arr) {
       setFocus(app.route);
     });
 
+	page('/books', function () {
+	  app.route = 'books';
+	});
+
     // 404
     page('*', function() {
       app.$.toast.text = 'Can\'t find: ' + window.location.href  + '. Redirected you to Home Page';

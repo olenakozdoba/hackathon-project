@@ -1,5 +1,5 @@
 {
   "projects": {
-    "Tesla": "just-plate-140406"
+    "default": "easychargeapp"
   }
 }

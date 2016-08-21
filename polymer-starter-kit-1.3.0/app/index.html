@@ -1,9 +1,47 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Geolocation</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <title>Easy Charge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
+
+    <meta name="theme-color" content="#fff">
+
+    <!-- Web Application Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Tile color for Win8 -->
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="PSK">
+    <link rel="icon" sizes="192x192" href="images/easycharge-icon.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
+    <link rel="apple-touch-icon" href="images/easycharge-icon.png">
+
+    <!-- Tile icon for Win8 (144x144) -->
+    <meta name="msapplication-TileImage" content="images/touch/easycharge-icon.png">
+
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild-->
+
+    <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- endbuild -->
+
+    <!-- Because this project uses vulcanize this should be your only html import
+         in this file. All other imports should go in elements.html -->
+    <link rel="import" href="elements/elements.html">
+
+    <!-- For shared styles, shared-styles.html import in elements.html -->
+    <style is="custom-style" include="shared-styles"></style>
+
     <style>
       html, body {
         height: 100%;
@@ -47,7 +85,7 @@
             var addresses = ['71 N Wilson Ave Pasadena, CA 91106'];
 
             for (var x = 0; x < addresses.length; x++) {
-                $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false', null, function (data) {
+                $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false', null, function (data) {
                     var p = data.results[0].geometry.location
                     var latlng = new google.maps.LatLng(p.lat, p.lng);
                     new google.maps.Marker({

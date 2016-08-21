@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>Easy Charge</title><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="theme-color" content="#fff"><link rel="manifest" href="manifest.json"><meta name="msapplication-TileColor" content="#3372DF"><meta name="mobile-web-app-capable" content="yes"><meta name="application-name" content="PSK"><link rel="icon" sizes="192x192" href="images/easycharge-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="Polymer Starter Kit"><link rel="apple-touch-icon" href="images/easycharge-icon.png"><meta name="msapplication-TileImage" content="images/touch/easycharge-icon.png"><link rel="stylesheet" href="styles/main.css"><script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script><link rel="import" href="elements/elements.html"><style is="custom-style" include="shared-styles"></style><style>
+<!DOCTYPE html><html><head><title>Geolocation</title><meta name="viewport" content="initial-scale=1.0, user-scalable=no"><meta charset="utf-8"><style>
       html, body {
         height: 100%;
         margin: 0;
@@ -36,7 +36,7 @@
             var addresses = ['71 N Wilson Ave Pasadena, CA 91106'];
 
             for (var x = 0; x < addresses.length; x++) {
-                $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false', null, function (data) {
+                $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false', null, function (data) {
                     var p = data.results[0].geometry.location
                     var latlng = new google.maps.LatLng(p.lat, p.lng);
                     new google.maps.Marker({
