@@ -163,6 +163,15 @@ gulp.task('libs', function() {
     }));
 });
 
+// Copy scripts to dist
+gulp.task('scripts', function() {
+  return gulp.src(['app/scripts/**'])
+    .pipe(gulp.dest(dist('scripts')))
+    .pipe($.size({
+      title: 'scripts'
+    }));
+});
+
 // Scan your HTML for assets & optimize them
 gulp.task('html', function() {
   return optimizeHtmlTask(
@@ -280,7 +289,7 @@ gulp.task('default', ['clean'], function(cb) {
   // Uncomment 'cache-config' if you are going to use service workers.
   runSequence(
     ['ensureFiles', 'copy', 'styles'],
-    ['images', 'fonts', 'html', 'libs'],
+    ['images', 'fonts', 'html', 'libs', 'scripts'],
     'vulcanize', // 'cache-config',
     cb);
 });
