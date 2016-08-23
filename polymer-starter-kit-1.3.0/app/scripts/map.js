@@ -21,21 +21,32 @@ function initMap() {
       infoWindow.setContent('Location found.');
       map.setCenter(pos);
 
-      
-      var addresses = ['71 N Wilson Ave Pasadena, CA 91106'];
+      var ref = new Firebase("https://easychargeapp.firebaseio.com");
+	  
+	  var spotRef = ref.child("Spot");
+	  
+	  spotRef.on("value", function(snapshot) {
+	  
+		  var addresses = [];
+		  snapshot.forEach(function(data) {
+			addresses.push(data.val()["address"]);
+		  });
+		
+		  for (var x = 0; x < addresses.length; x++) {
+			  $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false', null, function (data) {
+				  var p = data.results[0].geometry.location
+				  var latlng = new google.maps.LatLng(p.lat, p.lng);
+				  new google.maps.Marker({
+					  position: latlng,
+					  map: map
+				  });
 
-      for (var x = 0; x < addresses.length; x++) {
-          $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false', null, function (data) {
-              var p = data.results[0].geometry.location
-              var latlng = new google.maps.LatLng(p.lat, p.lng);
-              new google.maps.Marker({
-                  position: latlng,
-                  map: map
-              });
-
-          });
-      }
-      
+			  });
+		  }
+		}, function (errorObject) {
+		  console.log("The read failed: " + errorObject.code);
+		});
+	  
     }, function() {
       handleLocationError(true, infoWindow, map.getCenter());
     });
