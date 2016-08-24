@@ -52,6 +52,14 @@
         height: 100%;
       }
     </style>
+
+    <style is="custom-style">
+      paper-button.custom {
+        --paper-button-ink-color: var(--paper-green-800);
+        background-color: var(--paper-green-800);
+        color: white;
+      }
+    </style>
   </head>
   <body unresolved>
   <!-- build:remove -->
@@ -132,6 +140,10 @@
               <paper-input label=" Price per hour"><div prefix>$</div></paper-input>
               <paper-textarea label="Address"></paper-textarea>
               <paper-textarea label="Description"></paper-textarea>
+              <div style="padding-top: 40px; padding-bottom: 20px;">
+                <paper-button raised class="custom" onClick="createSpot()"
+                  style="width: 100%; margin: 0px !important;">Create</paper-button>
+              </div>
             </section>
           </iron-pages>
         </div>
@@ -146,7 +158,11 @@
 
     <!-- build:js scripts/app.js -->
   <script src="scripts/app.js"> </script>
-   
+  <script>
+    function createSpot() {
+      window.location.href = "/provider";
+    };
+  </script>   
 
   </body>
 </html>
