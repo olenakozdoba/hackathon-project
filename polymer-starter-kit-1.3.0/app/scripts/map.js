@@ -78,7 +78,7 @@ function createMarker(spot, map) {
 		});
 		
 		var infowindow = new google.maps.InfoWindow({
-		  content: '<p>' + spot.address + '<br>$' + spot.price + ' per hour</p> <button onclick="reserveButtonClicked(\''+spot.key+'\', true)">Reserve</button>'
+		  content: '<p>' + spot.address + '<br>$' + spot.price + ' per hour</p><paper-button class="custom" style="width: 100%; margin: 0px !important;" raised onclick="reserveButtonClicked(\''+spot.key+'\', true)">Reserve</paper-button>'
 		});
 	}
 	else {
@@ -90,7 +90,7 @@ function createMarker(spot, map) {
 		});
 		
 		var infowindow = new google.maps.InfoWindow({
-		  content: '<p>' + spot.address + '<br>$' + spot.price + ' per hour</p> <button onclick="reserveButtonClicked(\''+spot.key+'\', false)">Release</button>'
+		  content: '<p>' + spot.address + '<br>$' + spot.price + ' per hour</p> <paper-button class="custom" style="width: 100%; margin: 0px !important;background-color:purple;" raised onclick="reserveButtonClicked(\''+spot.key+'\', false)">Release</paper-button>'
 		});
 	}
 	
