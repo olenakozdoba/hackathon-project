@@ -162,18 +162,20 @@
             </section>
             <section data-route="addspot" style="padding: 20px;">
               <div>Add a charging spot</div> 
-              <paper-input label="Spot name"></paper-input>
-              <paper-input label=" Price per hour"><div prefix>$</div></paper-input>
-              <paper-textarea label="Address"></paper-textarea>
-              <paper-textarea label="Description"></paper-textarea>
-              <div style="padding-top: 40px; padding-bottom: 20px;">
-                <paper-button raised class="custom" onClick="createSpot()"
-                  style="width: 100%; margin: 0px !important;">Create</paper-button>
-              </div>
+			  <form is="iron-form" id="createForm" method="post">
+				  <paper-input label="Spot name" id="name"></paper-input>
+				  <paper-input label=" Price per hour" id="price"><div prefix>$</div></paper-input>
+				  <paper-textarea label="Address" id="address"></paper-textarea>
+				  <paper-textarea label="Description"id="description"></paper-textarea>
+				  <div style="padding-top: 40px; padding-bottom: 20px;">
+					<paper-button raised class="custom" onClick="createSpot()"
+					  style="width: 100%; margin: 0px !important;">Create</paper-button>
+				  </div>
+			  </form>
             </section>
           </iron-pages>
+		  
         </div>
-
       </paper-scroll-header-panel>
     </paper-drawer-panel>
 
@@ -186,8 +188,27 @@
   <script src="scripts/app.js"> </script>
   <script>
     function createSpot() {
-      window.location.href = "/provider";
+      var name = document.getElementById("name").value;
+	  var price = document.getElementById("price").value;
+	  var address = document.getElementById("address").value;
+	  var desc = document.getElementById("description").value;
+	  
+	  var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot").child(name);
+	  spotRef.set({
+		  
+		"address": address,
+		"price": price,
+		"desc": desc,
+		"status" : 0
+		 
+	  });
+	  
+	  //window.location.href = "/provider";
     };
+	
+	function pop_alert() {
+	alert("here");
+	}
   </script>   
 
   </body>
