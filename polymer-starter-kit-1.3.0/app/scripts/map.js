@@ -9,7 +9,6 @@ function initMap() {
     center: {lat: 34.146, lng: -118.130},//34.1463769,-118.1298394
     zoom: 15
   });
-  //var infoWindow = new google.maps.InfoWindow({map: map});
   
   // Try HTML5 geolocation.
   if (navigator.geolocation) {
@@ -18,9 +17,6 @@ function initMap() {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-
-      //infoWindow.setPosition(pos);
-      //infoWindow.setContent('Location found.');
 	  
 	  var image = 'http://i.stack.imgur.com/orZ4x.png';
 	  var marker = new google.maps.Marker({
@@ -82,7 +78,7 @@ function createMarker(spot, map) {
 		});
 		
 		var infowindow = new google.maps.InfoWindow({
-		  content: '<p>price: $' + spot.price + ' per hour</p> <button onclick="reserveButtonClicked(\''+spot.key+'\', true)">Reserve</button>'
+		  content: '<p>' + spot.address + '<br>$' + spot.price + ' per hour</p> <button onclick="reserveButtonClicked(\''+spot.key+'\', true)">Reserve</button>'
 		});
 	}
 	else {
@@ -94,7 +90,7 @@ function createMarker(spot, map) {
 		});
 		
 		var infowindow = new google.maps.InfoWindow({
-		  content: '<p>price: $' + spot.price + ' per hour</p> <button onclick="reserveButtonClicked(\''+spot.key+'\', false)">Release</button>'
+		  content: '<p>' + spot.address + '<br>$' + spot.price + ' per hour</p> <button onclick="reserveButtonClicked(\''+spot.key+'\', false)">Release</button>'
 		});
 	}
 	
@@ -117,10 +113,25 @@ function createMarker(spot, map) {
 
 function reserveButtonClicked(spotKey, isReserving) {
 	var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot");
-	  
+	
 	var addressRef = spotRef.child(spotKey);
+	
+	if(!isReserving){
+		addressRef.on("value", function(snapshot) {
+		  var startTime = snapshot.val()["startTime"];
+		  if(startTime != 0)
+		  {
+			  var duration =  Math.round(new Date().getTime()/1000) - startTime ;
+			  alert("You have used the spot for "+ duration+" seconds");
+		  }
+		}, function (errorObject) {
+		  console.log("The read failed: " + errorObject.code);
+		});
+	}
+	
 	addressRef.update({
-	  "status": isReserving ? 1 : 0
+	  "status": isReserving ? 1 : 0,
+	  "startTime": isReserving ? Math.round(new Date().getTime()/1000) : 0
 	});
 	
 	location.reload();
