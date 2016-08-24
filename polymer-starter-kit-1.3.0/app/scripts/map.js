@@ -98,18 +98,20 @@ function createMarker(spot, map) {
 		});
 	}
 	
-
-    marker.addListener('click', function() {
-      if (!infowindow.isOpened) {
-	  
-        infowindow.open(marker.get('chargemap'), marker);
-        infowindow.isOpened = true;
-      }
-      else {
-        infowindow.close();
-        infowindow.isOpened = false;
-      }
-    });
+	google.maps.event.addListener(marker, 'click', function() {
+            if(!marker.open){
+                infowindow.open(map,marker);
+                marker.open = true;
+            }
+            else{
+                infowindow.close();
+                marker.open = false;
+            }
+            google.maps.event.addListener(map, 'click', function() {
+                infowindow.close();
+                marker.open = false;
+            });
+        });
   });
 }
 
