@@ -16,28 +16,28 @@
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="PSK">
-    <link rel="icon" sizes="192x192" href="images/easycharge-icon.png">
+    <link rel="icon" sizes="192x192" href="/images/easycharge-icon.png">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
-    <link rel="apple-touch-icon" href="images/easycharge-icon.png">
+    <link rel="apple-touch-icon" href="/images/easycharge-icon.png">
 
     <!-- Tile icon for Win8 (144x144) -->
-    <meta name="msapplication-TileImage" content="images/touch/easycharge-icon.png">
+    <meta name="msapplication-TileImage" content="/images/easycharge-icon.png">
 
     <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="/styles/main.css">
     <!-- endbuild-->
 
     <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- endbuild -->
 
     <!-- Because this project uses vulcanize this should be your only html import
          in this file. All other imports should go in elements.html -->
-    <link rel="import" href="elements/elements.html">
+    <link rel="import" href="/elements/elements.html">
 
     <!-- For shared styles, shared-styles.html import in elements.html -->
     <style is="custom-style" include="shared-styles"></style>
@@ -124,14 +124,14 @@
           <iron-pages attr-for-selected="data-route" selected="{{route}}" style="height:100%; padding: 0%;">
             <section data-route="home" style="height:100%" >
               <div id="chargemap" style="width:100%; height:100%"></div>
-              <script src="libs/jquery-3.1.0.min.js"></script>
+              <script src="/libs/jquery-3.1.0.min.js"></script>
               <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
-              <script src="scripts/map.js"></script>
+              <script src="/scripts/map.js"></script>
               <script async defer
               src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtl3l6IRtEBBsi9PjCY3OWcd3t3UU9VLE&callback=initMap">
               </script>  
             </section>
-            <section data-route="provider" >
+            <section data-route="provider">
               <div role="listbox">
                 <paper-item>
                   <paper-item-body two-line>
@@ -157,6 +157,7 @@
         <!-- <link rel="section" href="elements/spotList.html"> -->
     
             </section>
+
             <section data-route="addspot" style="padding: 20px;">
               <div>Add a charging spot</div> 
                 <form is="iron-form" id="createForm" method="post">
@@ -182,13 +183,13 @@
   </template>
 
     <!-- build:js scripts/app.js -->
-  <script src="scripts/app.js"> </script>
+  <script src="/scripts/app.js"> </script>
   <script>
     function createSpot() {
       var name = document.getElementById("name").value;
       var price = document.getElementById("price").value;
       var address = document.getElementById("address").value;
-      var desc = document.getElementById("description").value;
+      var desc = document.getElementById("description").value || "";
       
       var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot").child(name);
       spotRef.set({
@@ -199,8 +200,7 @@
       "status" : 0
        
       });
-      
-    //window.location.href = "/provider";
+      page("/provider");
     };
   
   function pop_alert() {
