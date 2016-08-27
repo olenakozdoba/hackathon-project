@@ -125,56 +125,53 @@
             <section data-route="home" style="height:100%" >
               <div id="chargemap" style="width:100%; height:100%"></div>
               <script src="libs/jquery-3.1.0.min.js"></script>
-			        <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+              <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
               <script src="scripts/map.js"></script>
               <script async defer
               src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtl3l6IRtEBBsi9PjCY3OWcd3t3UU9VLE&callback=initMap">
               </script>  
             </section>
             <section data-route="provider" >
-				<div role="listbox">
-				  <paper-icon-item>
-					<paper-item-body two-line>
-					  <div>Pasadena
-						<paper-icon-button icon="star" alt="favourite this!">
-					  </div>
-					  <div secondary>
-
-					<div id=footer style="width:80%; margin:auto>
-						<div style="display:inline-block"; padding-left:20px>
-							1055 Colorado Blvd
-						</div>
-						<div style="display:block; float:right; padding-right:20px> 
-							Right align
-						</div>
-					</div>
-					</div>
-		
-					</paper-item-body>
-					<br>
-				  </paper-icon-item>
-				</paper-item-body></div>
-				  
-				  
-				</div>
-				<!-- <link rel="section" href="elements/spotList.html"> -->
-	  
+              <div role="listbox">
+                <paper-item>
+                  <paper-item-body two-line>
+                    <div>Pasadena
+                      <paper-icon-button icon="star" alt="favourite this!" />
+                    </div>
+                    <div secondary>
+                      <div id=footer style="width:80%; margin:auto">
+                        <div style="display:inline-block"; padding-left:20px">
+                          1055 Colorado Blvd
+                        </div>
+                        <div style="display:block; float:right; padding-right:20px"> 
+                          Right align
+                        </div>
+                      </div>
+                    </div>
+            
+                  </paper-item-body>
+                  
+                </paper-item>
+              </div>
+                
+        <!-- <link rel="section" href="elements/spotList.html"> -->
+    
             </section>
             <section data-route="addspot" style="padding: 20px;">
               <div>Add a charging spot</div> 
-			  <form is="iron-form" id="createForm" method="post">
-				  <paper-input label="Spot name" id="name"></paper-input>
-				  <paper-input label=" Price per hour" id="price"><div prefix>$</div></paper-input>
-				  <paper-textarea label="Address" id="address"></paper-textarea>
-				  <paper-textarea label="Description"id="description"></paper-textarea>
-				  <div style="padding-top: 40px; padding-bottom: 20px;">
-					<paper-button raised class="custom" onClick="createSpot()"
-					  style="width: 100%; margin: 0px !important;">Create</paper-button>
-				  </div>
-			  </form>
+                <form is="iron-form" id="createForm" method="post">
+                  <paper-input label="Spot name" id="name"></paper-input>
+                  <paper-input label=" Price per hour" id="price"><div prefix>$</div></paper-input>
+                  <paper-textarea label="Address" id="address"></paper-textarea>
+                  <paper-textarea label="Description"id="description"></paper-textarea>
+                  <div style="padding-top: 40px; padding-bottom: 20px;">
+                    <paper-button raised class="custom" onClick="createSpot()"
+                      style="width: 100%; margin: 0px !important;">Create</paper-button>
+                  </div>
+                </form>
             </section>
           </iron-pages>
-		  
+      
         </div>
       </paper-scroll-header-panel>
     </paper-drawer-panel>
@@ -189,26 +186,26 @@
   <script>
     function createSpot() {
       var name = document.getElementById("name").value;
-	  var price = document.getElementById("price").value;
-	  var address = document.getElementById("address").value;
-	  var desc = document.getElementById("description").value;
-	  
-	  var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot").child(name);
-	  spotRef.set({
-		  
-		"address": address,
-		"price": price,
-		"desc": desc,
-		"status" : 0
-		 
-	  });
-	  
-	  //window.location.href = "/provider";
+      var price = document.getElementById("price").value;
+      var address = document.getElementById("address").value;
+      var desc = document.getElementById("description").value;
+      
+      var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot").child(name);
+      spotRef.set({
+        
+      "address": address,
+      "price": price,
+      "desc": desc,
+      "status" : 0
+       
+      });
+      
+    //window.location.href = "/provider";
     };
-	
-	function pop_alert() {
-	alert("here");
-	}
+  
+  function pop_alert() {
+  alert("here");
+  }
   </script>   
 
   </body>
