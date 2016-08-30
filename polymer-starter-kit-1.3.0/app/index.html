@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>Easy Charge</title>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src="/libs/jquery-3.1.0.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
 
@@ -31,12 +33,13 @@
     <link rel="stylesheet" href="/styles/main.css">
     <!-- endbuild-->
 
-    <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+    <!-- build:js /bower_components/webcomponentsjs/webcomponents-lite.min.js -->
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- endbuild -->
 
     <!-- Because this project uses vulcanize this should be your only html import
          in this file. All other imports should go in elements.html -->
+    
     <link rel="import" href="/elements/elements.html">
 
     <!-- For shared styles, shared-styles.html import in elements.html -->
@@ -59,132 +62,183 @@
         background-color: var(--paper-green-800);
         color: white;
       }
+      paper-fab.green {
+        --paper-fab-background: var(--paper-green-800);
+      }
     </style>
   </head>
   <body unresolved>
   <!-- build:remove -->
-  <span id="browser-sync-binding"></span>
-  <!-- endbuild -->
+    <span id="browser-sync-binding"></span>
+    <!-- endbuild -->
+  <!--<dom-module id="easy-charge-app">-->
+    <template is="dom-bind" id="app">
 
-  <template is="dom-bind" id="app">
+      <paper-drawer-panel id="paperDrawerPanel">
+        <!-- Drawer Scroll Header Panel -->
+        <paper-scroll-header-panel drawer>
 
-    <paper-drawer-panel id="paperDrawerPanel">
-      <!-- Drawer Scroll Header Panel -->
-      <paper-scroll-header-panel drawer>
+          <!-- Drawer Toolbar -->
+          <paper-toolbar id="drawerToolbar">
+            <span class="menu-name">Menu</span>
+          </paper-toolbar>
 
-        <!-- Drawer Toolbar -->
-        <paper-toolbar id="drawerToolbar">
-          <span class="menu-name">Menu</span>
-        </paper-toolbar>
+          <!-- Drawer Content -->
+          <paper-menu class="app-menu" attr-for-selected="data-route" selected="[[route]]">
+            <a data-route="home" href="{{baseUrl}}">
+              <iron-icon icon="home"></iron-icon>
+              <span>Home</span>
+            </a>
 
-        <!-- Drawer Content -->
-        <paper-menu class="app-menu" attr-for-selected="data-route" selected="[[route]]">
-          <a data-route="home" href="{{baseUrl}}">
-            <iron-icon icon="home"></iron-icon>
-            <span>Home</span>
-          </a>
+            <a data-route="payment" href="{{baseUrl}}payment">
+              <iron-icon icon="payment"></iron-icon>
+              <span>Update Payment</span>
+            </a>
 
-          <a data-route="payment" href="{{baseUrl}}payment">
-            <iron-icon icon="payment"></iron-icon>
-            <span>Update Payment</span>
-          </a>
-
-          <a data-route="orders" href="{{baseUrl}}orders">
-            <iron-icon icon="reorder"></iron-icon>
-            <span>My Orders</span>
-          </a>
-      
-          <a data-route="settings" href="{{baseUrl}}settings">
-            <iron-icon icon="settings"></iron-icon>
-            <span>Settings</span>
-          </a>
-
-        </paper-menu>
-      </paper-scroll-header-panel>
-
-      <!-- Main Area -->
-      <paper-scroll-header-panel main id="headerPanelMain" condenses keep-condensed-header>
-        <!-- Main Toolbar -->
-        <paper-toolbar id="mainToolbar" class="small">
-          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
-
-          <span class="space"></span>
-
-          <!-- Toolbar icons -->
-          <!--<paper-icon-button icon="refresh"></paper-icon-button>
-          <paper-icon-button icon="search"></paper-icon-button>-->
-
-          <!-- Application name -->
-          <div class="middle middle-container">
-            <div class="app-name">Easy Charge</div>
-          </div>
-        </paper-toolbar>
-
-        <div class="content">
-          <iron-pages attr-for-selected="data-route" selected="{{route}}" style="height:100%; padding: 0%;">
-            <section data-route="home" style="height:100%" >
-              <div id="chargemap" style="width:100%; height:100%"></div>
-              <script src="/libs/jquery-3.1.0.min.js"></script>
-              <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
-              <script src="/scripts/map.js"></script>
-              <script async defer
-              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtl3l6IRtEBBsi9PjCY3OWcd3t3UU9VLE&callback=initMap">
-              </script>  
-            </section>
-
-            <section data-route="provider">
-							<iframe src="elements/spotList.html"></iframe>
-            </section>
-
-            <section data-route="addspot" style="padding: 20px;">
-              <div>Add a charging spot</div> 
-                <form is="iron-form" id="createForm" method="post">
-                  <paper-input label="Spot name" id="name"></paper-input>
-                  <paper-input label=" Price per hour" id="price"><div prefix>$</div></paper-input>
-                  <paper-textarea label="Address" id="address"></paper-textarea>
-                  <paper-textarea label="Description"id="description"></paper-textarea>
-                  <div style="padding-top: 40px; padding-bottom: 20px;">
-                    <paper-button raised class="custom" onClick="createSpot()"
-                      style="width: 100%; margin: 0px !important;">Create</paper-button>
-                  </div>
-                </form>
-            </section>
-          </iron-pages>
-      
-        </div>
-      </paper-scroll-header-panel>
-    </paper-drawer-panel>
-
-    <paper-toast id="toast">
-      <span class="toast-hide-button" role="button" tabindex="0" onclick="app.$.toast.hide()">Ok</span>
-    </paper-toast>  
-  </template>
-
-    <!-- build:js scripts/app.js -->
-  <script src="/scripts/app.js"> </script>
-  <script>
-    function createSpot() {
-      var name = document.getElementById("name").value;
-      var price = document.getElementById("price").value;
-      var address = document.getElementById("address").value;
-      var desc = document.getElementById("description").value || "";
-      
-      var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot").child(name);
-      spotRef.set({
+            <a data-route="orders" href="{{baseUrl}}orders">
+              <iron-icon icon="reorder"></iron-icon>
+              <span>My Orders</span>
+            </a>
         
-      "address": address,
-      "price": price,
-      "desc": desc,
-      "status" : 0
-       
-      });
-      page("/provider");
-    };
-  
-  function pop_alert() {
-  alert("here");
-  }
-  </script>   
+            <a data-route="settings" href="{{baseUrl}}settings">
+              <iron-icon icon="settings"></iron-icon>
+              <span>Settings</span>
+            </a>
 
+          </paper-menu>
+        </paper-scroll-header-panel>
+
+        <!-- Main Area -->
+        <paper-scroll-header-panel main id="headerPanelMain" condenses keep-condensed-header>
+          <!-- Main Toolbar -->
+          <paper-toolbar id="mainToolbar" class="small">
+            <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+
+            <span class="space"></span>
+
+            <!-- Toolbar icons -->
+            <!--<paper-icon-button icon="refresh"></paper-icon-button>
+            <paper-icon-button icon="search"></paper-icon-button>-->
+
+            <!-- Application name -->
+            <div class="middle middle-container">
+              <div class="app-name">Easy Charge</div>
+            </div>
+          </paper-toolbar>
+
+          <div class="content">
+            <iron-pages attr-for-selected="data-route" selected="{{route}}" style="height:100%; padding: 0%;">
+              <section data-route="home" style="height:100%" >
+                <div id="chargemap" style="width:100%; height:100%"></div>
+                <template is="dom-if" if="{{route == 'home'}}">
+                  <script src="/scripts/map.js"></script>
+                  <script async defer
+                  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtl3l6IRtEBBsi9PjCY3OWcd3t3UU9VLE&callback=initMap">
+                  </script> 
+                </template>
+              </section>
+              <section data-route="provider">
+                <div role="listbox" id="spot-listbox">
+                </div>
+                <paper-fab icon="add" title="Add spot" class="green" style="position: fixed; bottom: 16px; right: 16px;"
+                  onClick="openAddSpotPage()">
+                </paper-fab>
+                <script>
+
+                  function loadSpots() {
+                    //$.getScript("another_script.js");
+                    $("#spot-listbox").empty();
+                    var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot");
+
+                    spotRef.on("value", function(snapshot) {
+      
+                      var spots = [];
+                      snapshot.forEach(function(data) {
+                      spots.push({"name" : data.key(), "address" : data.val()["address"], "price" : data.val()["price"],
+                        "status" : data.val()["status"]
+                    });
+                      });
+                    
+                      for (var x = 0; x < spots.length; x++) {
+                        addSpot(spots[x]);
+                      }
+
+                    }, function (errorObject) {
+                      console.log("The read failed: " + errorObject.code);
+                    });
+      
+                  };
+
+                  function addSpot(spot) {
+                    $("#spot-listbox").append(
+                      `<paper-item style="padding-top: 10px;padding-bottom: 10px;">
+                        <paper-item-body twoline style="flex-basis: 70%;">
+                          <div>` + spot.name +  `</div>
+                          <div secondary>` + 
+                                spot.address + 
+                          `</div>
+                        </paper-item-body>
+                        <span style="flex: 1;"></span>
+                        <div end-justified layout>` + (spot.status == "0" ? 'Free' : 'Reserved') + `</div>
+                      </paper-item>`
+                      );
+                  };
+
+                  //loadSpots();
+                  function pop_alert() {
+                    alert("here");
+                  };
+                </script>
+          <!-- <link rel="section" href="elements/spotList.html"> -->
+              </section>
+
+              <section data-route="addspot" style="padding: 20px;">
+                <div>Add a charging spot</div> 
+                  <form is="iron-form" id="createForm" method="post" style="max-width: 450px;">
+                    <paper-input label="Spot name" id="name"></paper-input>
+                    <paper-input label=" Price per hour" id="price"><div prefix>$</div></paper-input>
+                    <paper-textarea label="Address" id="address"></paper-textarea>
+                    <paper-textarea label="Description"id="description"></paper-textarea>
+                    <div style="padding-top: 40px; padding-bottom: 20px;">
+                      <paper-button raised class="custom" onClick="createSpot()"
+                        style="width: 100%; margin: 0px !important;">Create</paper-button>
+                    </div>
+                  </form>
+              </section>
+            </iron-pages>
+        
+          </div>
+        </paper-scroll-header-panel>
+      </paper-drawer-panel>
+
+      <paper-toast id="toast">
+        <span class="toast-hide-button" role="button" tabindex="0" onclick="app.$.toast.hide()">Ok</span>
+      </paper-toast> 
+    
+    </template>
+    <script src="/scripts/app.js"> </script>
+    <script>
+      function createSpot() {
+        var name = document.getElementById("name").value;
+        var price = document.getElementById("price").value;
+        var address = document.getElementById("address").value;
+        var desc = document.getElementById("description").value || "";
+        
+        var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot").child(name);
+        spotRef.set({
+          
+        "address": address,
+        "price": price,
+        "desc": desc,
+        "status" : 0
+         
+        });
+        page("/provider");
+      };
+
+      function openAddSpotPage() {
+        page('/provider/addSpot');
+      }
+    </script>
   </body>
 </html>

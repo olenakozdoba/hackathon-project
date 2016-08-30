@@ -134,7 +134,7 @@ function reserveButtonClicked(spotKey, isReserving) {
 	  "startTime": isReserving ? Math.round(new Date().getTime()/1000) : 0
 	});
 	
-	location.reload();
+	location.reload(true);
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {

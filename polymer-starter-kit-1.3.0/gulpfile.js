@@ -85,7 +85,7 @@ var optimizeHtmlTask = function(src, dest) {
     // In case you are still using useref build blocks
     .pipe($.if('*.css', $.minifyCss()))
     .pipe(assets.restore())
-    .pipe($.useref())
+    //.pipe($.useref())
     // Minify any HTML
     .pipe($.if('*.html', $.minifyHtml({
       quotes: true,
@@ -101,7 +101,7 @@ var optimizeHtmlTask = function(src, dest) {
 
 // Compile and automatically prefix stylesheets
 gulp.task('styles', function() {
-  return styleTask('styles', ['**/*.css']);
+  return styleTask('/styles', ['**/*.css']);
 });
 
 // Ensure that we are not missing required files for the project
@@ -208,8 +208,8 @@ gulp.task('cache-config', function(callback) {
   glob([
     'index.html',
     './',
-    'bower_components/webcomponentsjs/webcomponents-lite.min.js',
-    '{elements,scripts,styles}/**/*.*'],
+    '/bower_components/webcomponentsjs/webcomponents-lite.min.js',
+    '/{elements,scripts,styles}/**/*.*'],
     {cwd: dir}, function(error, files) {
     if (error) {
       callback(error);
@@ -288,7 +288,7 @@ gulp.task('serve:dist', ['default'], function() {
 gulp.task('default', ['clean'], function(cb) {
   // Uncomment 'cache-config' if you are going to use service workers.
   runSequence(
-    ['ensureFiles', 'copy', 'styles'],
+    ['ensureFiles', 'styles', 'copy'],
     ['images', 'fonts', 'html', 'libs', 'scripts'],
     'vulcanize', // 'cache-config',
     cb);
