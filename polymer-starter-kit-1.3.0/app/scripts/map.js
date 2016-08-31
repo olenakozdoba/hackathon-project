@@ -18,7 +18,7 @@ function initMap() {
         lng: position.coords.longitude
       };
 	  
-	  var image = 'http://i.stack.imgur.com/orZ4x.png';
+	  var image = 'https://i.stack.imgur.com/orZ4x.png';
 	  var marker = new google.maps.Marker({
 		  position: pos,
 		  map: map,
