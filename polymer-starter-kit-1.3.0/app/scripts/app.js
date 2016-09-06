@@ -82,3 +82,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     app.$.paperDrawerPanel.closeDrawer();
   };
 })(document);
+
+/*function loadSpots() {
+    
+    var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot");
+
+    spotRef.on("value", function(snapshot) {
+
+      var spots = [];
+      snapshot.forEach(function(data) {
+      spots.push({"name" : data.key(), "address" : data.val()["address"], "price" : data.val()["price"],
+        "status" : data.val()["status"]
+    });
+      });
+      $("#spot-listbox").empty();
+      for (var x = 0; x < spots.length; x++) {
+        addSpot(spots[x]);
+      }
+
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+
+  };
+
+  function addSpot(spot) {
+    $("#spot-listbox").append(
+      `<paper-item style="padding-top: 10px;padding-bottom: 10px;">
+        <paper-item-body twoline style="flex-basis: 70%;">
+          <div>` + spot.name +  `</div>
+          <div secondary>` + 
+                spot.address + 
+          `</div>
+        </paper-item-body>
+        <span style="flex: 1;"></span>
+        <div end-justified layout>` + (spot.status == "0" ? 'Free' : 'Reserved') + `</div>
+      </paper-item>`
+      );
+  };*/

@@ -70,6 +70,46 @@
         --paper-fab-background: var(--paper-green-800);
       }
     </style>
+    <script>
+    function loadSpots() {
+    
+        var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot");
+
+        spotRef.on("value", function(snapshot) {
+
+          var spots = [];
+          snapshot.forEach(function(data) {
+          spots.push({"name" : data.key(), "address" : data.val()["address"], "price" : data.val()["price"],
+            "status" : data.val()["status"]
+        });
+          });
+          $("#spot-listbox").empty();
+          for (var x = 0; x < spots.length; x++) {
+            addSpot(spots[x]);
+          }
+
+        }, function (errorObject) {
+          console.log("The read failed: " + errorObject.code);
+        });
+
+      };
+
+      function addSpot(spot) {
+        $("#spot-listbox").append(
+          `<paper-item style="padding-top: 10px;padding-bottom: 10px;">
+            <paper-item-body twoline style="flex-basis: 70%;">
+              <div>` + spot.name +  `</div>
+              <div secondary>` + 
+                    spot.address + 
+              `</div>
+            </paper-item-body>
+            <span style="flex: 1;"></span>
+            <div end-justified layout>` + (spot.status == "0" ? 'Free' : 'Reserved') + `</div>
+          </paper-item>`
+          );
+      };
+
+    </script>
   </head>
   <body unresolved>
   <!-- build:remove -->
@@ -146,51 +186,6 @@
                 <paper-fab icon="add" title="Add spot" class="green" style="position: fixed; bottom: 16px; right: 16px;"
                   onClick="openAddSpotPage()">
                 </paper-fab>
-                <script>
-
-                  function loadSpots() {
-                    $("#spot-listbox").empty();
-                    var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot");
-
-                    spotRef.on("value", function(snapshot) {
-      
-                      var spots = [];
-                      snapshot.forEach(function(data) {
-                      spots.push({"name" : data.key(), "address" : data.val()["address"], "price" : data.val()["price"],
-                        "status" : data.val()["status"]
-                    });
-                      });
-                    
-                      for (var x = 0; x < spots.length; x++) {
-                        addSpot(spots[x]);
-                      }
-
-                    }, function (errorObject) {
-                      console.log("The read failed: " + errorObject.code);
-                    });
-      
-                  };
-
-                  function addSpot(spot) {
-                    $("#spot-listbox").append(
-                      `<paper-item style="padding-top: 10px;padding-bottom: 10px;">
-                        <paper-item-body twoline style="flex-basis: 70%;">
-                          <div>` + spot.name +  `</div>
-                          <div secondary>` + 
-                                spot.address + 
-                          `</div>
-                        </paper-item-body>
-                        <span style="flex: 1;"></span>
-                        <div end-justified layout>` + (spot.status == "0" ? 'Free' : 'Reserved') + `</div>
-                      </paper-item>`
-                      );
-                  };
-
-                  //loadSpots();
-                  function pop_alert() {
-                    alert("here");
-                  };
-                </script>
           <!-- <link rel="section" href="elements/spotList.html"> -->
               </section>
 
