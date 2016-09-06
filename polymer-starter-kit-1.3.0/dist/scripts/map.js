@@ -121,8 +121,17 @@ function reserveButtonClicked(spotKey, isReserving) {
 		  var startTime = snapshot.val()["startTime"];
 		  if(startTime != 0)
 		  {
-			  var duration =  Math.round(new Date().getTime()/1000) - startTime ;
-			  alert("You have used the spot for "+ duration+" seconds");
+			  var duration =  Math.round(new Date().getTime()/1000) - startTime;
+
+        var hours = parseInt( duration / 3600 ) % 24;
+        var minutes = parseInt( duration / 60 ) % 60;
+        var seconds = duration % 60;
+
+        var durationDisplay = (hours > 0 ? (hours + (hours < 2 ? " hour " : " hours ")) : "") + 
+          (minutes > 0 ? minutes + (minutes < 2 ? " minute " : " minutes ") : "") + 
+          (seconds > 0 ? seconds + (seconds  < 2 ? " second " : " seconds ") : "");
+
+			  alert("You have used the spot for " + durationDisplay);
 		  }
 		}, function (errorObject) {
 		  console.log("The read failed: " + errorObject.code);
