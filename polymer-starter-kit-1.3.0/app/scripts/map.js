@@ -78,7 +78,8 @@ function createMarker(spot, map) {
 		});
 		
 		var infowindow = new google.maps.InfoWindow({
-		  content: '<p>' + spot.address + '<br>$' + spot.price + ' per hour</p><paper-button class="custom" style="width: 100%; margin: 0px !important;" raised onclick="reserveButtonClicked(\''+spot.key+'\', true)">Reserve</paper-button>'
+		  content: '<p>' + '<h3 style="margin-bottom: 10px;">' + spot.key + '</h3>' 
+      + spot.address + '<br>$' + spot.price + ' per hour</p><paper-button class="custom" raised onclick="reserveButtonClicked(\''+spot.key+'\', true)">Reserve</paper-button>'
 		});
 	}
 	else {
@@ -90,7 +91,8 @@ function createMarker(spot, map) {
 		});
 		
 		var infowindow = new google.maps.InfoWindow({
-		  content: '<p>' + spot.address + '<br>$' + spot.price + ' per hour</p> <paper-button class="custom" style="width: 100%; margin: 0px !important;background-color:purple;" raised onclick="reserveButtonClicked(\''+spot.key+'\', false)">Release</paper-button>'
+		  content: '<p>' + '<h3 style="margin-bottom: 10px;">' + spot.key + '</h3>' 
+      + spot.address + '<br>$' + spot.price + ' per hour</p> <paper-button class="custom" style="background-color:purple;" raised onclick="reserveButtonClicked(\''+spot.key+'\', false)">Release</paper-button>'
 		});
 	}
 	
@@ -129,9 +131,16 @@ function reserveButtonClicked(spotKey, isReserving) {
 
         var durationDisplay = (hours > 0 ? (hours + (hours < 2 ? " hour " : " hours ")) : "") + 
           (minutes > 0 ? minutes + (minutes < 2 ? " minute " : " minutes ") : "") + 
-          (seconds > 0 ? seconds + (seconds  < 2 ? " second " : " seconds ") : "");
+          (seconds > 0 ? seconds + (seconds  < 2 ? " second " : " seconds") : "");
 
-			  alert("You have used the spot for " + durationDisplay);
+        var amountDisplay = "";
+        var price = snapshot.val()["price"];
+        if (price) {
+          amount = (parseFloat(price)* duration/3600).toFixed(2);
+          amountDisplay = "\n$" + amount + " will be charged from your credit card. "
+        }
+        var amount =
+			  alert("You have used the spot for " + durationDisplay + ". " + amountDisplay + "\nThank you for using our service. \n\nSee you next time!");
 		  }
 		}, function (errorObject) {
 		  console.log("The read failed: " + errorObject.code);
