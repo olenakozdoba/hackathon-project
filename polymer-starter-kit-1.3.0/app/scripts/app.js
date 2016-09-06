@@ -39,11 +39,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // See https://github.com/Polymer/polymer/issues/1381
   window.addEventListener('WebComponentsReady', function() {
     // imports are loaded and elements have been registered
-    var pages = document.querySelector('iron-pages');
-    if (pages.selected == "provider") {
+    //var pages = document.querySelector('iron-pages');
+    //if (pages.selected == "provider") {
       loadSpots();
-      //pop_alert();
-    }
+    //}
   });
 
   // Main area's paper-scroll-header-panel custom condensing transformation of

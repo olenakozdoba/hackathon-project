@@ -18,14 +18,15 @@
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="PSK">
-    <link rel="icon" sizes="192x192" href="/images/easycharge-icon.png">
+    <meta name="application-name" content="EasyCharge">
+    
+    <link rel="icon" href="/images/EasyCharge-icon.ico">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
-    <link rel="apple-touch-icon" href="/images/easycharge-icon.png">
+    <meta name="apple-mobile-web-app-title" content="EasyCharge">
+    <link rel="apple-touch-icon" href="/images/EasyCharge-apple-touch.png">
 
     <!-- Tile icon for Win8 (144x144) -->
     <meta name="msapplication-TileImage" content="/images/easycharge-icon.png">
@@ -122,7 +123,7 @@
             <paper-icon-button icon="search"></paper-icon-button>-->
 
             <!-- Application name -->
-            <div class="middle middle-container">
+            <div class="middle middle-container" >
               <div class="app-name">Easy Charge</div>
             </div>
           </paper-toolbar>
@@ -146,7 +147,6 @@
                 <script>
 
                   function loadSpots() {
-                    //$.getScript("another_script.js");
                     $("#spot-listbox").empty();
                     var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot");
 
