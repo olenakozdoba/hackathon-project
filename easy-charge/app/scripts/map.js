@@ -56,7 +56,7 @@ function initMap() {
 }
 
 function createMarker(spot, map) {
-  $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address='+spot.address+'&sensor=false', null, function (data) {
+  $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address='+spot.address+'&sensor=false&key=AIzaSyBtl3l6IRtEBBsi9PjCY3OWcd3t3UU9VLE', null, function (data) {
     var p = data.results[0].geometry.location
     var latlng = new google.maps.LatLng(p.lat, p.lng);
 	
