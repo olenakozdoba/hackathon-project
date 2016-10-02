@@ -5,9 +5,9 @@
 2. Install Github Desktop https://desktop.github.com/
 
 3. On the page https://github.com/olenakozdoba/hackathon-project find green button "Clone or Download", click on it, then 
-click on the button "Open in Desktop". When the GitHub desktop is opened, click "Sync" button.
+click on the button "Open in Desktop". When the GitHub desktop is opened, click "Sync" button. This should download sources to your computer.
 
-4. Open command line window, run "npm install -g bower", command should run without error
+4. Open command line window, run "npm install -g bower", command should run without error. If "npm" command is not found, try restarting computer. 
 
 5. Change location to local working copy of downloaded project (i.e. <...>/hackathon-project/easy-charge), run command "npm install". Command should finish without error
 
