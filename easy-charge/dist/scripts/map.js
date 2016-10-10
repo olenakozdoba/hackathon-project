@@ -26,16 +26,14 @@ function initMap() {
 	  });  
 	  marker.setMap(map);
       map.setCenter(pos);
-
-      var ref = new Firebase("https://easychargeapp.firebaseio.com");
 	  
-	  var spotRef = ref.child("Spot");
+	  var spotRef = firebase.database().ref().child("Spot");
 	  
 	  spotRef.on("value", function(snapshot) {
 	  
 		  var spots = [];
 		  snapshot.forEach(function(data) {
-			spots.push({"key" : data.key(), "address" : data.val()["address"], "price" : data.val()["price"]});
+			spots.push({"key" : data.key, "address" : data.val()["address"], "price" : data.val()["price"]});
 		  });
 		
 		  for (var x = 0; x < spots.length; x++) {
@@ -56,11 +54,11 @@ function initMap() {
 }
 
 function createMarker(spot, map) {
-  $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address='+spot.address+'&sensor=false', null, function (data) {
+  $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address='+spot.address+'&sensor=false&key=AIzaSyBtl3l6IRtEBBsi9PjCY3OWcd3t3UU9VLE', null, function (data) {
     var p = data.results[0].geometry.location
     var latlng = new google.maps.LatLng(p.lat, p.lng);
 	
-	var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot");
+	var spotRef = new firebase.database().ref().child("Spot");
 	  
 	var addressRef = spotRef.child(spot.key);
 	var status = 0;

@@ -21,13 +21,13 @@
     </style><script>
     function loadSpots() {
     
-        var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot");
+        var spotRef = firebase.database().ref().child("Spot");
 
         spotRef.on("value", function(snapshot) {
 
           var spots = [];
           snapshot.forEach(function(data) {
-          spots.push({"name" : data.key(), "address" : data.val()["address"], "price" : data.val()["price"],
+          spots.push({"name" : data.key, "address" : data.val()["address"], "price" : data.val()["price"],
             "status" : data.val()["status"]
         });
           });
@@ -57,7 +57,7 @@
           );
       };
 
-    </script></head><body unresolved=""><span id="browser-sync-binding"></span><template is="dom-bind" id="app"><paper-drawer-panel id="paperDrawerPanel"><paper-scroll-header-panel drawer=""><paper-toolbar id="drawerToolbar"><span class="menu-name">Menu</span></paper-toolbar><paper-menu class="app-menu" attr-for-selected="data-route" selected="[[route]]"><a data-route="home" href="{{baseUrl}}"><iron-icon icon="home"></iron-icon><span>Home</span></a> <a data-route="payment" href="{{baseUrl}}payment"><iron-icon icon="payment"></iron-icon><span>Update Payment</span></a> <a data-route="orders" href="{{baseUrl}}orders"><iron-icon icon="reorder"></iron-icon><span>My Orders</span></a> <a data-route="settings" href="{{baseUrl}}settings"><iron-icon icon="settings"></iron-icon><span>Settings</span></a></paper-menu></paper-scroll-header-panel><paper-scroll-header-panel main="" id="headerPanelMain" condenses="" keep-condensed-header=""><paper-toolbar id="mainToolbar" class="small"><paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle=""></paper-icon-button><span class="space"></span><div class="middle middle-container"><div class="app-name">Easy Charge</div></div></paper-toolbar><div class="content"><iron-pages attr-for-selected="data-route" selected="{{route}}" style="height:100%; padding: 0%;"><section data-route="home" style="height:100%"><div id="chargemap" style="width:100%; height:100%"></div><template is="dom-if" if="{{route == 'home'}}"><script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtl3l6IRtEBBsi9PjCY3OWcd3t3UU9VLE&callback=initMap">
+    </script></head><body unresolved=""><span id="browser-sync-binding"></span><template is="dom-bind" id="app"><firebase-app id="firebase" auth-domain="easychargeapp.firebaseapp.com" database-url="https://easychargeapp.firebaseio.com/" api-key="AIzaSyAqocvDlxDg8BW5XrjwCkWxwM4rGTpE82k"></firebase-app><firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError"></firebase-auth><paper-drawer-panel id="paperDrawerPanel"><paper-scroll-header-panel drawer=""><paper-toolbar id="drawerToolbar"><span class="menu-name">Menu</span></paper-toolbar><paper-menu class="app-menu" attr-for-selected="data-route" selected="[[route]]"><a data-route="home" href="{{baseUrl}}"><iron-icon icon="home"></iron-icon><span>Home</span></a> <a data-route="payment" href="{{baseUrl}}payment"><iron-icon icon="payment"></iron-icon><span>Update Payment</span></a> <a data-route="orders" href="{{baseUrl}}orders"><iron-icon icon="reorder"></iron-icon><span>My Orders</span></a> <a data-route="settings" href="{{baseUrl}}settings"><iron-icon icon="settings"></iron-icon><span>Settings</span></a></paper-menu></paper-scroll-header-panel><paper-scroll-header-panel main="" id="headerPanelMain" condenses="" keep-condensed-header=""><paper-toolbar id="mainToolbar" class="small"><paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle=""></paper-icon-button><span class="space"></span><div class="middle middle-container"><div class="app-name">Easy Charge</div></div></paper-toolbar><div class="error" hidden$="[[!error]]">[[error.code]]: [[error.message]]</div><div hidden$="[[user]]" style="padding-top: 10px;padding-bottom: 10px;"><paper-button raised="" on-tap="signInWithGoogle">Sign In With Google</paper-button></div><div hidden$="[[!user]]" style="display: flex;flex-direction: row;align-items: center; padding-top: 10px;padding-bottom: 10px;"><div style="height:100%;flex: 1;padding-left: 10px">Welcome, [[user.email]]!</div><paper-button on-tap="signOut" style="float: right">Sign Out</paper-button></div><div class="content"><iron-pages attr-for-selected="data-route" selected="{{route}}" style="height:100%; padding: 0%;"><section data-route="home" style="height:100%"><div id="chargemap" style="width:100%; height:100%"></div><template is="dom-if" if="{{route == 'home'}}"><script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtl3l6IRtEBBsi9PjCY3OWcd3t3UU9VLE&callback=initMap">
                   </script></template></section><section data-route="provider"><div role="listbox" id="spot-listbox"></div><paper-fab icon="add" title="Add spot" class="green" style="position: fixed; bottom: 16px; right: 16px;" onclick="openAddSpotPage()"></paper-fab></section><section data-route="addspot" style="padding: 20px;"><div>Add a charging spot</div><form is="iron-form" id="createForm" method="post" style="max-width: 450px;"><paper-input label="Spot name" id="name"></paper-input><paper-input label="Price per hour" id="price"><div prefix="">$</div></paper-input><paper-textarea label="Address" id="address"></paper-textarea><paper-textarea label="Description" id="description"></paper-textarea><div style="padding-top: 40px; padding-bottom: 20px;"><paper-button raised="" class="custom" onclick="createSpot()" style="width: 100%; margin: 0px !important;">Create</paper-button></div></form></section></iron-pages></div></paper-scroll-header-panel></paper-drawer-panel><paper-toast id="toast"><span class="toast-hide-button" role="button" tabindex="0" onclick="app.$.toast.hide()">Ok</span></paper-toast></template><script src="/scripts/app.js"> </script><script>
       function createSpot() {
         var name = document.getElementById("name").value;
@@ -65,7 +65,7 @@
         var address = document.getElementById("address").value;
         var desc = document.getElementById("description").value || "";
         
-        var spotRef = new Firebase("https://easychargeapp.firebaseio.com/Spot").child(name);
+        var spotRef = firebase.database().ref().child("Spot").child(name);
         spotRef.set({
           
         "address": address,
