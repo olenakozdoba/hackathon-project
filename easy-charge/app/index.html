@@ -3,12 +3,13 @@
   <head>
     <title>Easy Charge</title>
     
+    <!-- Firebase version as of 10-19-2016, documentation @ https://firebase.google.com/support/releases -->
     <script src="https://www.gstatic.com/firebasejs/3.5.1/firebase.js"></script>
     <script src="/libs/jquery-3.1.0.min.js"></script>
     <script src="/scripts/map.js"></script>
+ 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-
     <meta name="theme-color" content="#fff">
 
     <!-- Web Application Manifest -->
@@ -40,6 +41,7 @@
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- endbuild -->
 
+
     <!-- Because this project uses vulcanize this should be your only html import
          in this file. All other imports should go in elements.html -->
     
@@ -47,7 +49,6 @@
 
     <!-- Below are links for icons -->
     <link rel="import" href="/bower_components/iron-icons/maps-icons.html">
-		
     <!-- For shared styles, shared-styles.html import in elements.html -->
     <style is="custom-style" include="shared-styles"></style>
 
@@ -60,10 +61,26 @@
       #map {
         height: 100%;
       }
-      div.paper-header {
-         position: relative;
-         padding-left: 5%;
-         padding-right: 5%;
+      .search-controls {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+      #search-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+		  height: 30px;
+        width: 200px;
       }
     </style>
 
@@ -78,13 +95,7 @@
       paper-fab.green {
         --paper-fab-background: var(--paper-green-800);
       }
-      paper-input.custom {
-         --paper-input-container-color: green;
-         <!-- --paper-input-container-focus-color: dark-green; -->
-         --paper-input-container-underline-disabled;
-      }
     </style>
-		
     <script>
     function loadSpots() {
     
@@ -123,15 +134,18 @@
           </paper-item>`
           );
       };
-      
+
     </script>
   </head>
   <body unresolved>
+  <!-- an input search box as an overlay over the map. It is for entering addresses, sites, and store names -->
+    <input id="search-input" class="search-controls" type="text" placeholder="Search Box">
+
   <!-- build:remove -->
     <span id="browser-sync-binding"></span>
   <!-- endbuild -->
   <!--<dom-module id="easy-charge-app">-->
-   <template is="dom-bind" id="app">
+    <template is="dom-bind" id="app">
       <firebase-app id="firebase" auth-domain="easychargeapp.firebaseapp.com"
         database-url="https://easychargeapp.firebaseio.com/"
         api-key="AIzaSyAqocvDlxDg8BW5XrjwCkWxwM4rGTpE82k">
@@ -139,14 +153,13 @@
       <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
       </firebase-auth>
       <paper-drawer-panel id="paperDrawerPanel">
-
         <!-- Drawer Scroll Header Panel -->
         <paper-scroll-header-panel drawer>
 
-         <!-- Drawer Toolbar -->
-         <paper-toolbar id="drawerToolbar">
-            <span class="menu-name">Easy Charge</span>
-         </paper-toolbar>
+          <!-- Drawer Toolbar -->
+          <paper-toolbar id="drawerToolbar">
+            <span class="menu-name">Menu</span>
+          </paper-toolbar>
 
           <!-- Drawer Content -->
           <paper-menu class="app-menu" attr-for-selected="data-route" selected="[[route]]">
@@ -174,36 +187,38 @@
         </paper-scroll-header-panel>
 
       <!-- Main (Map) Area -->
-      <!-- TK Need review:
-         * paper-scroll-header-panel style is different.
-         * The top GUI is no longer a toolbar, it is simply paper-input allowing user input for the address (Search Map) bar.
-           I think paper-input is more flexible than a toolbar, especially with class="custom" styling.
-      -->
-      <!-- <paper-scroll-header-panel id="headerPanelMain" condenses keep-condensed-header main> -->
-      <paper-scroll-header-panel id="headerPanelMain" fixed main>
-         <div class="paper-header">
-            <paper-input id="searchMap_input" class="custom" label="Search Map" type="search" no-label-float>
-               <paper-icon-button prefix icon="menu" paper-drawer-toggle></paper-icon-button>
-               <iron-icon suffix icon="maps:place" onclick="processCodeAddress()" > </iron-icon>
-            </paper-input>
-         </div>
+        <paper-scroll-header-panel main id="headerPanelMain" condenses keep-condensed-header>
+          <!-- Main Toolbar -->
+          <paper-toolbar id="mainToolbar" class="small">
+            <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
 
-         <div class="error" hidden$="[[!error]]">[[error.code]]: [[error.message]]</div>
-         <div hidden$="[[user]]" style="padding-top: 10px;padding-bottom: 10px;">
+            <span class="space"></span>
+
+            <!-- Toolbar icons -->
+            <!--<paper-icon-button icon="refresh"></paper-icon-button>
+            <paper-icon-button icon="search"></paper-icon-button>-->
+
+            <!-- Application name -->
+            <div class="middle middle-container" >
+              <div class="app-name">Easy Charge</div>
+            </div>
+          </paper-toolbar>
+          <div class="error" hidden$="[[!error]]">[[error.code]]: [[error.message]]</div>
+          <div hidden$="[[user]]" style="padding-top: 10px;padding-bottom: 10px;">
             <paper-button raised on-tap="signInWithGoogle">Sign In With Google</paper-button>
-         </div>
-         <div hidden$="[[!user]]" style="display: flex;flex-direction: row;align-items: center; padding-top: 10px;padding-bottom: 10px;">
-            <div style="height:100%;flex: 1;padding-left: 10px"> Welcome, [[user.email]]! </div>
+          </div>
+          <div hidden$="[[!user]]" style="display: flex;flex-direction: row;align-items: center; padding-top: 10px;padding-bottom: 10px;">
+             <div style="height:100%;flex: 1;padding-left: 10px"> Welcome, [[user.email]]! </div>
             <paper-button on-tap="signOut" style="float: right">Sign Out</paper-button>
-         </div>
-
-          <div class="content">
+          </div>
+          
+          <div class="content" >
             <iron-pages attr-for-selected="data-route" selected="{{route}}" style="height:100%; padding: 0%;">
               <section data-route="home" style="height:100%" >
                 <div id="chargemap" style="width:100%; height:100%"></div>
                 <template is="dom-if" if="{{route == 'home'}}">
                   <script async defer
-                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtl3l6IRtEBBsi9PjCY3OWcd3t3UU9VLE&callback=initMap">
+                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtl3l6IRtEBBsi9PjCY3OWcd3t3UU9VLE&libraries=places&callback=initMap">
                   </script> 
                 </template>
               </section>
@@ -239,8 +254,7 @@
         <span class="toast-hide-button" role="button" tabindex="0" onclick="app.$.toast.hide()">Ok</span>
       </paper-toast> 
     
-   </template>
-		
+    </template>
     <script src="/scripts/app.js"> </script>
     <script>
       function createSpot() {
@@ -264,12 +278,6 @@
       function openAddSpotPage() {
         page('/provider/addSpot');
       }
-      
-      function processCodeAddress() {
-         var address = document.querySelector("#searchMap_input");
-         codeAddress(address);
-      }
-
     </script>
   </body>
 </html>
