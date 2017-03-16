@@ -229,12 +229,15 @@ function reserveButtonClicked(spotKey, isReserving) {
 		  console.log("The read failed: " + errorObject.code);
 		});
 	}
-	
+
 	addressRef.update({
-	  "status": isReserving ? 1 : 0,
-	  "startTime": isReserving ? Math.round(new Date().getTime()/1000) : 0
-	});
-	
+      "status": isReserving ? 1 : 0,
+      "startTime": isReserving ? Math.round(new Date().getTime()/1000) : 0},
+      function(snapshot) {
+         console.log("The update status: " + snapshot.val());
+      }
+	);
+
 	location.reload(true);
 }
 
